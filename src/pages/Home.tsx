@@ -36,11 +36,11 @@ export default function Home() {
       <TextAnimation />
       <OurTreatmentsSlider />
       <UpperParallax />
-     <Testimonials />
+      <Testimonials />
       <OurPractice />
-      <OurTeamSection/>
-    
-      
+      <OurTeamSection />
+
+
     </div>
   );
 }
@@ -72,7 +72,7 @@ function TextAnimation() {
 }
 
 interface TextBlockProps {
-  textKey: JSX.Element;
+  textKey?: any;
   index: number;
   total: number;
   scrollYProgress: any;

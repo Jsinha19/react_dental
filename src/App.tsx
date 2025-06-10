@@ -10,7 +10,8 @@ import './App.css'
 import Book from './components/Book';
 import GetInTouch from './components/GetInTouch';
 import Footer from "./components/Footer";
-import Loader from './components/loader';
+import Loader from './components/Loader';
+
 // import { Loader, Loader2 } from 'lucide-react';
 function App() {
   // const [count, setCount] = useState(0)

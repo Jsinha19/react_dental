@@ -1,9 +1,9 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { useTranslation } from "react-i18next";
+
 
 export default function Book() {
-    const { t } = useTranslation();
+   
     const ref = useRef(null);
     const isInView = useInView(ref, {
         once: true,
