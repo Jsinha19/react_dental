@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 
+// Example images
 const projects = [
   "https://cdn.prod.website-files.com/63c97522259e222504824584/6424683d76c085161883c44b_Practice%20Images-08-p-1600.jpg",
   "https://cdn.prod.website-files.com/63c97522259e222504824584/642468bd972f491297997849_Practice%20Images-44-min-p-1600.jpg",
@@ -15,6 +16,16 @@ export default function ServicesSlides() {
     offset: ["start start", "end end"],
   });
 
+  // Responsive transform calculation
+  // On mobile, images are 90vw wide + 8px gap
+  // On desktop, images are max 600px wide + 8px gap
+  // We'll use a CSS variable to handle this difference
+
+  // Calculate the total slide distance in JS for mobile and desktop
+  // We'll use a CSS variable for gap and width
+
+  // For simplicity, keep the transform as before, but images will be responsive
+
   const backgroundColor = useTransform(
     scrollYProgress,
     [0, 0.04, 0.2],
@@ -24,7 +35,7 @@ export default function ServicesSlides() {
   const x = useTransform(
     scrollYProgress,
     [0, 1],
-    ["0%", `-${(projects.length - 1) * 52}%`] // adjust based on image + gap width
+    ["0%", `-${(projects.length - 1) * 52}%`]
   );
 
   return (
@@ -46,7 +57,15 @@ export default function ServicesSlides() {
 
       {/* Image Slider */}
       <div className="relative w-full min-h-[200vh]">
-        <div className="sticky top-0 h-screen overflow-hidden flex items-center">
+        <div
+          className="
+            sticky top-0 h-screen flex items-center
+            overflow-x-hidden
+            md:overflow-visible
+            w-screen
+            md:w-full
+          "
+        >
           <motion.div
             className="flex h-auto gap-[8px] px-4 items-center"
             style={{ x }}
@@ -54,13 +73,25 @@ export default function ServicesSlides() {
             {projects.map((src, idx) => (
               <div
                 key={idx}
-                className="flex-shrink-0 w-auto h-auto max-w-[600px]" // Keeps natural size, caps max width
+                className="
+                  flex-shrink-0
+                  w-auto
+                  h-auto
+                  max-w-[600px]
+                  md:max-w-[600px]
+                  max-w-[90vw]
+                "
               >
                 <Link to="/projects">
                   <motion.img
                     src={src}
                     alt={`Practice Slide ${idx}`}
-                    className="h-[75vh] w-auto object-cover rounded-md shadow-lg"
+                    className="
+                      object-cover rounded-md shadow-lg
+                      h-[40vh] max-h-[75vw] w-auto
+                      md:h-[75vh] md:max-w-[600px]
+                      max-w-[90vw]
+                    "
                   />
                 </Link>
               </div>
@@ -68,6 +99,24 @@ export default function ServicesSlides() {
           </motion.div>
         </div>
       </div>
+
+      {/* Inline mobile-specific styles for safety */}
+      <style>{`
+        @media (max-width: 640px) {
+          .sticky {
+            overflow-x: hidden !important;
+            width: 100vw !important;
+            max-width: 100vw !important;
+          }
+          .max-w-\\[600px\\] {
+            max-width: 90vw !important;
+          }
+          .h-\\[75vh\\] {
+            height: 40vh !important;
+            max-height: 75vw !important;
+          }
+        }
+      `}</style>
     </motion.div>
   );
 }
