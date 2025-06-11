@@ -87,7 +87,7 @@ function TestimonialCard({
   isFirst: boolean;
 }) {
   const sectionStart = index / total;
-  const sectionEnd = (index + 1) / total;
+  // const sectionEnd = (index + 1) / total;
   const y = useTransform(scrollYProgress, [sectionStart, sectionStart + 0.1], ["120%", "0%"]);
 
   const cardSpacing = 40;
