@@ -1,32 +1,25 @@
 import { useRef } from "react";
 import HomeParallax from "../components/HomeParallax";
-import OurTreatmentsSlider from "../components/OurTreatmentsSlider"
-
-
+import OurTreatmentsSlider from "../components/OurTreatmentsSlider";
 import { motion, useScroll, useTransform } from "framer-motion";
 import UpperParallax from "../components/UpperParallax.";
 import Testimonials from "../components/Testimonials";
 import OurPractice from "../components/OurPractice";
 import OurTeamSection from "../components/OurTeamSection";
 
-
-
-
 const texts = [
   <>
-    <span className="text-[#6d58b3]">Leaders </span><span className="text-black">in cosmetic <br />dentistry</span>
-    <br />
-  </>,
-
-  <>
-    <span className="text-[#6d58b3]">State</span><span className="text-black">of art the art <br />in mordern clinic</span>
-    <br />
+    <span className="text-[#6d58b3]">Leaders </span>
+    <span className="text-black"> in cosmetic <br />dentistry</span>
   </>,
   <>
-    <span className="text-[#6d58b3]">Redefining standards</span><span className="text-black">in <br />patients care</span>
-    <br />
+    <span className="text-[#6d58b3]">State</span>
+    <span className="text-black"> of the art <br />in modern clinic</span>
   </>,
-
+  <>
+    <span className="text-[#6d58b3]">Redefining standards</span>
+    <span className="text-black"> in <br />patients care</span>
+  </>,
 ];
 
 export default function Home() {
@@ -39,8 +32,6 @@ export default function Home() {
       <Testimonials />
       <OurPractice />
       <OurTeamSection />
-
-
     </div>
   );
 }
@@ -54,7 +45,7 @@ function TextAnimation() {
 
   return (
     <motion.div ref={containerRef} className="min-h-[300vh] relative">
-      <div className="sticky top-0 h-screen flex items-center justify-center bg-white">
+      <div className="sticky top-0 h-screen flex items-center bg-gradient-to-b from-indigo-100 via-white to-white">
         <div className="relative w-full h-full">
           {texts.map((textKey, index) => (
             <TextBlock
@@ -91,11 +82,10 @@ function TextBlock({ textKey, index, total, scrollYProgress }: TextBlockProps) {
 
   return (
     <motion.div
-      className="absolute inset-0 flex items-center justify-center text-center"
+      className="absolute inset-0 flex items-center justify-start pl-[12%]"
       style={{ opacity, zIndex: total - index, transform: "translateY(-80px)" }}
-
     >
-      <h4 className="text-2xl md:text-6xl font-bold tracking-wide leading-tight ">
+      <h4 className="text-4xl md:text-6xl font-light tracking-wide leading-tight text-[#666]">
         {textKey}
       </h4>
     </motion.div>

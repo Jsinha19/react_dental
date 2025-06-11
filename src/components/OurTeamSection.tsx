@@ -1,3 +1,7 @@
+import { useEffect } from "react";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+
 const teamMembers = [
   { name: "Dr Philip Church", role: "Dentist", specialty: "Implants and Sedation", image: "/team/1.jpg" },
   { name: "Dr Jonathan Fitzpatrick", role: "Dentist", specialty: "Smile Makeovers", image: "/team/2.jpg" },
@@ -27,28 +31,44 @@ const OurTeamSection = () => {
         {/* Right Doctor Images with Text */}
         <div className="md:w-2/3 grid grid-cols-2 gap-6">
           {teamMembers.map((member, index) => (
-            <div
-              key={index}
-              className={`flex flex-col items-center ${
-                index === 6 ? "col-start-1" : ""
-              }`}
-            >
-              <img
-                src={member.image}
-                alt={member.name}
-                className="w-[250px] h-[330px] object-cover rounded-lg"
-                draggable={false}
-              />
-              <div className="mt-3 text-center">
-                <h3 className="font-semibold text-base text-white">{member.name}</h3>
-                <p className="text-sm text-violet-400">{member.role}</p>
-                <p className="text-sm text-gray-400">{member.specialty}</p>
-              </div>
-            </div>
+            <TeamCard key={index} member={member} index={index} />
           ))}
         </div>
       </div>
     </section>
+  );
+};
+
+const TeamCard = ({ member, index }: { member: any; index: number }) => {
+  const controls = useAnimation();
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
+
+  useEffect(() => {
+    if (inView) {
+      controls.start({ opacity: 1, y: 0 });
+    }
+  }, [inView, controls]);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={controls}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className={`flex flex-col items-center ${index === 6 ? "col-start-1" : ""}`}
+    >
+      <img
+        src={member.image}
+        alt={member.name}
+        className="w-[320px] h-[420px] object-cover rounded-2xl"
+        draggable={false}
+      />
+      <div className="mt-3 text-center">
+        <h3 className="font-semibold text-base text-white">{member.name}</h3>
+        <p className="text-sm text-violet-400">{member.role}</p>
+        <p className="text-sm text-gray-400">{member.specialty}</p>
+      </div>
+    </motion.div>
   );
 };
 

@@ -81,3 +81,8 @@ button:focus-visible {
 .marquee-content {
   animation: scroll-marquee 20s linear infinite;
 }
+
+/* index.css or global.css */
+body {
+  overflow-x: hidden;
+}

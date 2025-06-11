@@ -52,7 +52,9 @@ function App() {
                 <Routes>  <Route path="/" element={<Home />} />
                 </Routes>
                 <Book />
+                     
                 <GetInTouch />
+           
                 <Footer />
               </Router>
 
