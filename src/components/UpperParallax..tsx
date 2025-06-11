@@ -136,6 +136,10 @@ function SlideImage({
             e.currentTarget.src = `https://placehold.co/400x600/CCCCCC/000000?text=Image+${index + 1}`;
           }}
         />
+      
+
+
+      
       </div>
     </motion.div>
   );
