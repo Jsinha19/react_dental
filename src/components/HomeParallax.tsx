@@ -38,7 +38,11 @@ export default function HomeParallax() {
           Our philosophy is built on providing the world’s best cosmetic dental care, uniquely tailored to the individual.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-row flex-wrap justify-center gap-3 sm:gap-4 -mt-4 sm:mt-0">
+
+
+
+
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

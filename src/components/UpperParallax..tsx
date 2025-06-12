@@ -28,20 +28,19 @@ export default function ParallaxWithScroll() {
   return (
     <div
       ref={containerRef}
-      className={`relative w-full ${
-        isMobile ? "min-h-[220vh]" : "min-h-[300vh]"
-      } bg-[#f4f4f4] ${isMobile ? "pt-2 pb-0" : "pt-6 pb-0"}`}
-      // Removed extra padding-bottom, minimized padding-top
+      className="relative w-full min-h-[300vh] sm:min-h-[220vh] bg-[#f4f4f4] pt-2 pb-0"
     >
       <div className="sticky top-0 h-screen">
-        <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center h-full px-2 sm:px-4">
-          {/* Left Content - Minimal top padding */}
+        <div
+          className={`container mx-auto flex ${
+            isMobile ? "flex-col-reverse" : "md:grid md:grid-cols-2"
+          } items-center h-full px-2 sm:px-4`}
+        >
+          {/* Left Content */}
           <div
-            className={`flex flex-col justify-start ${
-              isMobile ? "pt-2" : "pt-6"
-            } z-10 text-left ${
+            className={`flex flex-col justify-start z-10 ${
               isMobile
-                ? "static h-auto pr-0"
+                ? "relative h-auto pr-0 py-6"
                 : "md:sticky md:top-0 md:h-screen md:pr-6"
             }`}
           >
@@ -57,16 +56,17 @@ export default function ParallaxWithScroll() {
             </button>
           </div>
 
-          {/* Right Parallax - Aggressive upward shift */}
-          <div className="relative h-screen flex items-center justify-center -mt-8 md:mt-0" style={isMobile ? { transform: "translateY(-32px)" } : {}}>
-            <div className="sticky top-0 h-screen w-full overflow-visible">
+          {/* Right Parallax */}
+          <div className="relative h-screen flex items-center justify-center w-full">
+          <div className={`sticky top-0 h-screen w-full relative overflow-hidden ${isMobile ? "mt-50" : ""}`}>
+
               {images.map((src, index) => (
                 <SlideImage
                   key={index}
+                  imageSrc={src}
                   index={index}
                   total={images.length}
                   scrollYProgress={scrollYProgress}
-                  imageSrc={src}
                   isMobile={isMobile}
                 />
               ))}
@@ -93,53 +93,68 @@ function SlideImage({
 }) {
   const sectionStart = index / total;
   const sectionEnd = (index + 1) / total;
-  const y = useTransform(
+
+  const rawY = useTransform(
     scrollYProgress,
     [sectionStart, sectionEnd],
-    isMobile ? ["40%", "0%"] : ["80%", "0%"]
+    ["100%", "0%"],
+    { clamp: false }
   );
 
+  const y = useTransform(rawY, (value) => {
+    const val = parseFloat(value);
+    return val >= 0 ? "0%" : value;
+  });
+
   const imgWrapperClasses = isMobile
-    ? "w-[92%] h-[50vh] rounded-xl"
-    : "w-[85%] h-[70%] rounded-2xl";
+    ? "w-full max-w-full h-[60vh] mx-auto rounded-xl overflow-hidden shadow-xl bg-white"
+    : "w-full max-w-[98vw] sm:max-w-[900px] h-[76vh] sm:h-[90vh] mx-auto rounded-xl overflow-hidden shadow-xl bg-white";
 
   if (index === 0) {
+    const firstImageY = useTransform(
+      scrollYProgress,
+      [0, 1 / total],
+      ["0%", "-100%"],
+      { clamp: false }
+    );
+
     return (
-      <div className="sticky top-0 h-screen z-0 flex items-center justify-center">
-        <div className={`${imgWrapperClasses} overflow-hidden shadow-xl bg-white`}>
+      <motion.div
+        className="sticky top-0 h-screen z-0 flex items-center justify-center w-full px-2 sm:px-4"
+        style={{ y: firstImageY, zIndex: total - index }}
+      >
+        <div className={imgWrapperClasses}>
           <img
             src={imageSrc}
             alt={`Slide ${index + 1}`}
-            className="object-cover w-full h-full rounded-xl brightness-90"
+            className="w-full h-full object-contain rounded-xl"
+            style={{ display: "block" }}
             onError={(e) => {
               e.currentTarget.onerror = null;
               e.currentTarget.src = `https://placehold.co/400x600/CCCCCC/000000?text=Image+${index + 1}`;
             }}
           />
         </div>
-      </div>
+      </motion.div>
     );
   }
 
   return (
     <motion.div
-      className="absolute inset-0 flex items-center justify-center"
-      style={{ y, zIndex: index }}
+      className="absolute inset-0 flex items-center justify-center w-full px-2 sm:px-4"
+      style={{ y, zIndex: total - index }}
     >
-      <div className={`${imgWrapperClasses} overflow-hidden shadow-xl bg-white`}>
+      <div className={imgWrapperClasses}>
         <img
           src={imageSrc}
           alt={`Slide ${index + 1}`}
-          className="object-cover w-full h-full rounded-xl brightness-90"
+          className="w-full h-full object-contain rounded-xl"
+          style={{ display: "block" }}
           onError={(e) => {
             e.currentTarget.onerror = null;
             e.currentTarget.src = `https://placehold.co/400x600/CCCCCC/000000?text=Image+${index + 1}`;
           }}
         />
-      
-
-
-      
       </div>
     </motion.div>
   );
